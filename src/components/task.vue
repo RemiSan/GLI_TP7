@@ -2,13 +2,9 @@
     <md-card>
       <md-card-header>
         <md-card-header-text>
-          <md-card-content v-if="!toggleNameEdit">
+          <md-card-content>
             {{task.name}}
           </md-card-content>
-          <md-field :class="{'md-invalid': task.name.length == 0}">
-            <md-textarea v-model="task.name"></md-textarea>
-            <span class="md-error">Enter your task here</span>
-          </md-field>
         </md-card-header-text>
       </md-card-header>
 
@@ -30,6 +26,10 @@ import { ITaskListObserver } from "../models/itasklistobserver";
 })
 export default class TaskVue extends Vue {
   @Prop({ required: true }) task!: Task;
+
+  deleteTask(): void{
+    this.task.observer.didDelete(this.task);
+  }
 }
 </script>
 

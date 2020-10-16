@@ -36,9 +36,14 @@ export default class Todos extends Vue implements ITaskListObserver {
   nameTask = "";
   tasks: Task[] = [];
   loading = false;
+  
+  async mounted(): Promise<void> {
+    this.refreshListTasks();
+  }
 
-  addTask(): void {
+  async addTask(): Promise<void>  {
     if (this.nameTask.length > 0) {
+      await TodoApi.createNewTodo(this.nameTask).then(() => this.refreshListTasks());
       this.nameTask = "";
     }
   }

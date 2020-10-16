@@ -2,6 +2,7 @@ import * as consts from '../config';
 import Axios from 'axios';
 import { ITask } from '@/models/itask';
 import { Task } from '@/models/task';
+import { ITaskListObserver } from '@/models/itasklistobserver';
 
 
 export class TodoApi{
@@ -13,14 +14,14 @@ export class TodoApi{
         const response = await this.todoAxios.delete<void>(url);
     }
 
-    static async createNewTodo(task: Task): Promise<void> {
+    static async createNewTodo(nameTask: string): Promise<void> {
         const url = consts.urlApi+'fiche';
-        const response = await this.todoAxios.post<ITask[]>(url);
+        const response = await this.todoAxios.post<void>(url,{ "title" : nameTask });
     }
 
-    static async getAllTodos(ITaskL): Promise<Task[]>{
+    static async getAllTodos(observer: ITaskListObserver): Promise<Task[]>{
       const url = consts.urlApi+'fiche';
       const response = await this.todoAxios.get<ITask[]>(url);
-      return response.data.map(itask => new Task(itask.title, itask.id, ));
+      return response.data.map(itask => new Task(itask.title, itask.id, observer));
     }
   }
