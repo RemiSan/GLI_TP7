@@ -6,6 +6,7 @@ import 'vue-material/dist/theme/default.css'
 
 Vue.config.productionTip = false
 
+
 Vue.use(MdCard);
 Vue.use(MdButton);
 Vue.use(MdField);

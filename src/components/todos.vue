@@ -32,6 +32,7 @@ import { Component, Vue } from "vue-property-decorator";
 import TaskVue from "./task.vue";
 import { Task } from "../models/task";
 import { ITaskListObserver } from "../models/itasklistobserver";
+import { TodoApi } from "../services/todoApi"
 
 @Component({
   components: { TaskVue },
@@ -81,8 +82,8 @@ export default class Todos extends Vue implements ITaskListObserver {
       });
   }
 
-  refreshListTasks(): void {
-    console.log("use axios to get tasks");
+  async refreshListTasks(): Promise<void> {
+    await TodoApi.getAllTodos();
   }
 }
 </script>
