@@ -5,21 +5,17 @@
           <md-card-content v-if="!toggleNameEdit">
             {{task.name}}
           </md-card-content>
-          <md-field :class="{'md-invalid': task.name.length == 0}" v-if="toggleNameEdit">
+          <md-field :class="{'md-invalid': task.name.length == 0}">
             <md-textarea v-model="task.name"></md-textarea>
             <span class="md-error">Enter your task here</span>
           </md-field>
         </md-card-header-text>
-        <md-button class="md-fab md-mini md-plain" v-on:click="editTaskName()">
-          <md-icon>edit</md-icon>
-        </md-button>
       </md-card-header>
 
       <md-card-actions>
         <md-button class="md-icon-button md-accent" v-on:click="deleteTask()">
           <md-icon>delete_forever</md-icon>
         </md-button>
-        <md-checkbox v-model="task.done">Done</md-checkbox>
       </md-card-actions>
     </md-card>
 </template>
@@ -33,18 +29,7 @@ import { ITaskListObserver } from "../models/itasklistobserver";
   components: {},
 })
 export default class TaskVue extends Vue {
-
-  toggleNameEdit = false;
-
-  editTaskName() {
-    this.toggleNameEdit = !this.toggleNameEdit;
-  }
-
-  @Prop({required: true}) task!: Task
-
-  deleteTask(){
-    this.task.delete();
-  }
+  @Prop({ required: true }) task!: Task;
 }
 </script>
 
@@ -55,7 +40,7 @@ export default class TaskVue extends Vue {
   margin-left: auto;
   margin-right: auto;
 }
-.md-button{
-  margin:4px;
+.md-button {
+  margin: 4px;
 }
 </style>

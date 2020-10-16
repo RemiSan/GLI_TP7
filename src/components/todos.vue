@@ -11,15 +11,10 @@
         </md-field>
         <br>
         <md-button class="md-raised md-primary" v-on:click="addTask()">Add</md-button>
-        <br>
-        <md-button class="md-raised md-primary" v-on:click="selectAllTasks()">Select all tasks</md-button>
-        <br>
-        <md-checkbox v-model="displayDoneTasks">Display done task</md-checkbox>
-        <br>
-        <md-checkbox v-model="displayNotDoneTasks">Display not done task</md-checkbox>
-        <br>
-        <md-button class="md-raised md-primary" v-on:click="deleteDoneTasks()">Delete done tasks</md-button>
-        <TaskVue v-for="task in getListFiltered()" :key="task.id" v-bind:task="task"/> 
+        <div v-if="!loading">
+          <TaskVue v-for="task in this.tasks" :key="task.id" v-bind:task="task"/> 
+        </div>
+        <h1 v-if="loading">Loading</h1>
     </div>
     <footer v-if="tasks.length > 0">
       <span> Number of tasks : {{ tasks.length }}</span>
@@ -32,7 +27,7 @@ import { Component, Vue } from "vue-property-decorator";
 import TaskVue from "./task.vue";
 import { Task } from "../models/task";
 import { ITaskListObserver } from "../models/itasklistobserver";
-import { TodoApi } from "../services/todoApi"
+import { TodoApi } from "../services/todoApi";
 
 @Component({
   components: { TaskVue },
@@ -40,50 +35,24 @@ import { TodoApi } from "../services/todoApi"
 export default class Todos extends Vue implements ITaskListObserver {
   nameTask = "";
   tasks: Task[] = [];
-  idTask = 0;
-  displayDoneTasks = true;
-  displayNotDoneTasks = true;
-
-  getListFiltered(): Task[] {
-    return this.tasks.filter(
-      (el) =>
-        (el.done && this.displayDoneTasks) ||
-        (!el.done && this.displayNotDoneTasks)
-    );
-  }
+  loading = false;
 
   addTask(): void {
     if (this.nameTask.length > 0) {
-      this.tasks.push(new Task(this.nameTask, this.idTask++, false, this));
       this.nameTask = "";
     }
   }
 
-  didDelete(task: Task) {
-    const index: number = this.tasks.indexOf(task);
-    if (index !== -1) {
-      this.tasks.splice(index, 1);
-    }
-  }
-  selectAllTasks(): void {
-    this.tasks.forEach((el) => {
-      el.done = true;
-    });
-  }
-
-  deleteDoneTasks(): void {
-    this.tasks
-      .filter((el) => el.done)
-      .forEach((element) => {
-        this.tasks.splice(
-          this.tasks.findIndex((i) => i === element),
-          1
-        );
-      });
+  async didDelete(task: Task) {
+    this.loading = true;
+    await TodoApi.deleteTodo(task).then(() => this.refreshListTasks());
   }
 
   async refreshListTasks(): Promise<void> {
-    await TodoApi.getAllTodos();
+    this.loading = true;
+    const tasks = await TodoApi.getAllTodos(this);
+    this.tasks = tasks;
+    this.loading = false;
   }
 }
 </script>
