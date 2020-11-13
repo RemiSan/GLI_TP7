@@ -1,24 +1,18 @@
-# myapp
+# Configuration
 
-## Project setup
-```
-npm install
-```
+Pour lier cette application au Back-End Jax-RS allez dans le fichier vue.config.js et modifiez la constante suivante:
 
-### Compiles and hot-reloads for development
 ```
-npm run serve
+proxy: 'http://localhost:8080' // enter the API url here
 ```
 
-### Compiles and minifies for production
+en entrant l'URL de votre back-end (sensé être le TP JaxRS de TAA).
+
+
+Puis allez dans src/config.ts et modifiez la constante suivante:
+
 ```
-npm run build
+export const urlVueProxy = "http://localhost:8081/"; // enter the vuejs url here
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+en entrant l'URL de votre application VueJS.
