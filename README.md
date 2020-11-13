@@ -19,3 +19,9 @@ export const urlVueProxy = "http://localhost:8081/"; // enter the vuejs url here
 ```
 
 en entrant l'URL de votre application VueJS.
+
+Vous pourrez enfin lancer l'application VueJS avec la commande:
+
+```
+npm run serve
+```
