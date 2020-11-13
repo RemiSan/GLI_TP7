@@ -1,1 +1,1 @@
-export const urlApi = "http://localhost:8080/"; // enter the API url here
+export const urlVueProxy = "http://localhost:8081/"; // enter the vuejs url here
